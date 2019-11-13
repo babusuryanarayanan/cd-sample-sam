@@ -9,14 +9,17 @@ phases:
   install:
     runtime-versions:
       java: openjdk8
+  pre_build:
+    commands:
+      - echo Test started on `date`
+      - mvn clean
   build:
     commands:
       - echo Build started on `date`
-      - mvn test
+      - mvn package shade:shade
   post_build:
     commands:
       - echo Build completed on `date`
-      - mvn package
       - aws cloudformation package --template-file samtemplate.yaml --s3-bucket cd-sample-sam --output-template-file outputSamTemplate.yaml
 artifacts:
   type: zip	
