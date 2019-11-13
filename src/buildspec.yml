@@ -1,19 +1,26 @@
 version: 0.2
+variables:
+        CACHE_CONTROL: "86400"
+        S3_BUCKET: "cd-sample-sam"
+        BUILD_JAR: "target/sample-1.0.0.jar"
+        BUILD_ENV: "prod"
+
 phases:
   install:
-  	runtime-versions:
+    runtime-versions:
       java: openjdk8
-   build:
+  build:
     commands:
       - echo Build started on `date`
+      - mvn test
       - mvn package 
   post_build:
     commands:
       - echo Build completed on `date`
       - aws cloudformation package --template-file samtemplate.yaml --s3-bucket cd-sample-sam --output-template-file outputSamTemplate.yaml
 artifacts:
-  
   files:
-  	- target/sample-1.0.0.jar
+    - target/sample-1.0.0.jar
     - samtemplate.yaml
     - outputSamTemplate.yaml
+discard-paths: yes
