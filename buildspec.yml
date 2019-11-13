@@ -19,6 +19,7 @@ phases:
       - mvn package
       - aws cloudformation package --template-file samtemplate.yaml --s3-bucket cd-sample-sam --output-template-file outputSamTemplate.yaml
 artifacts:
+  type: zip	
   files:
     - target/sample-1.0.0.jar
     - samtemplate.yaml
